@@ -6,7 +6,7 @@ class Solver:
         Class for solving ODEs numerically.
     """
 
-    def Euler_Solver(ode:ODE, y0:np.ndarray, t0:float, t_final:float, h:float) -> np.ndarray:
+    def EulerSolver(ode:ODE, y0:np.ndarray, t0:float, t_final:float, h:float) -> np.ndarray:
         """
             This solves the given ODE numerically using Euler's method.
 
