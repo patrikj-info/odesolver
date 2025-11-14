@@ -46,5 +46,5 @@ class ODESolver:
                 data : np.ndarray
 
         """
-        Plotter.plot(data=data, animated=kwargs.get("animated", False), phase_space=kwargs.get("phase_space", False), save=kwargs.get("save", False), filename=kwargs.get("filename", ""), xlabel=kwargs.get("xlabel", ""), ylabel=kwargs.get("ylabel", ""), title=kwargs.get("title", ""), fps=kwargs.get("fps", 60))
+        Plotter.plot(data=data, animated=kwargs.get("animated", False), phase_space=kwargs.get("phase_space", False), save=kwargs.get("save", False), filename=kwargs.get("filename", ""), xlabel=kwargs.get("xlabel", ""), ylabel=kwargs.get("ylabel", ""), title=kwargs.get("title", ""), fps=kwargs.get("fps", 60), fileformat=kwargs.get("fileformat", ""))
         

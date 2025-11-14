@@ -102,6 +102,8 @@ class Plotter():
                     plt.xlabel(xlabel=xlabel)
                     plt.ylabel(ylabel=ylabel)
                     plt.savefig(filename, dpi=400)
+                else:
+                    raise Exception(f"Given file format not recognized: {fileformat}")
 
 
         else:
