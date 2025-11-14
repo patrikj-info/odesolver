@@ -1,3 +1,3 @@
-from .model import odesolver
+from .odesolver import *
 
 __all__ = ["ODESolver"]
