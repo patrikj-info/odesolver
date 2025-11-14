@@ -13,8 +13,8 @@ license = {text = "MIT"}
 readme = "README.md"
 requires-python = ">=3.6"
 dependencies = [
-	"numpy>=",
-	"matplotlib>=",
+	"numpy>=2.2.5",
+	"matplotlib>=3.10.1",
 ]
 
 [project.urls]
