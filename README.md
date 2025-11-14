@@ -13,14 +13,14 @@ You can install the package via **PyPI** or from **source**.
 
 ### Install from PyPI
 
-'''bash
+```bash
     pip install odesolver
-'''
+```
 
 ### Install from Source (GitHub)
 
-'''bash
+```bash
     git clone https://git.rz.uni-augsburg.de/jelicpat/ode_solver.git
     cd ode_solver
     pip install .
-'''
+```
