@@ -1,5 +1,5 @@
 import numpy as np
-from ode import ODE
+from .ode import ODE
 
 class Solver:
     """
