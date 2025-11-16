@@ -1,4 +1,4 @@
-# ode_solver
+# odesolver
 
 A simple tool to solve ODEs numerically and plot the solution.
 
