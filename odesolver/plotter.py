@@ -63,8 +63,8 @@ class Plotter():
             # plot line
             line = anim_ax.plot(plot_x, plot_y)[0]
             
-            # axis settings
-            anim_ax.set(xlim=[np.nanmin(x)*1.5, np.nanmax(x)*1.5], ylim=[np.nanmin(y)*1.5, np.nanmax(y)*1.5])
+            # # axis settings
+            # anim_ax.set(xlim=[np.nanmin(x)*1.5, np.nanmax(x)*1.5], ylim=[np.nanmin(y)*1.5, np.nanmax(y)*1.5])
             
             # function for updating plot
             def update(frame):
@@ -107,18 +107,23 @@ class Plotter():
 
 
         else:
-            # load data
-            x = data[0]
-            y = data[1] 
-            if phase_space:
-                # phase space diagram?
-                x = data[2] # get first derivative (i.e. velocity)
+            try:
+                # load data
+                x = data[0]
+                y = data[1] 
+                if phase_space:
+                    # phase space diagram?
+                    x = data[2] # get first derivative (i.e. velocity)
 
-            plt.plot(x,y)
-            plt.title(label=title)
-            plt.xlabel(xlabel)
-            plt.xlabel(ylabel)
-            plt.show()           
+                plt.plot(x,y)
+                plt.title(label=title)
+                plt.xlabel(xlabel)
+                plt.xlabel(ylabel)
 
-            if save:
-                plt.savefig(filename, dpi=400)
+                if save:
+                    plt.savefig(filename, dpi=400)
+
+                plt.show()           
+
+            except Exception as e:
+                print(f"Error when saving the graph: {e=}")
