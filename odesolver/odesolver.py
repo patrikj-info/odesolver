@@ -30,6 +30,9 @@ class ODESolver:
             -----------------
                 np.ndarray
         """
+        if ode.get_order() != len(initial_conditions):
+            raise Exception("Amount of given initial conditions does not match order of ODE.")
+
         match method:
             case ODESolver.EULER:
                 return Solver.EulerSolver(ode=ode, y0=initial_conditions, t0=t0, t_final=t_final, h=h)
