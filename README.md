@@ -20,7 +20,7 @@ You can install the package via **PyPI** or from **source**.
 ### Install from Source (GitHub)
 
 ```bash
-    git clone https://git.rz.uni-augsburg.de/jelicpat/ode_solver.git
-    cd ode_solver
+    git clone https://github.com/patrikj-info/odesolver.git
+    cd odesolver
     pip install .
 ```
