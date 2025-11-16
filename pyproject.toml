@@ -21,3 +21,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
 ]
+
+[project.urls]
+Homepage = "https://github.com/patrikj-info/odesolver"
+Issues = "https://github.com/patrikj-info/odesolver/issues"
