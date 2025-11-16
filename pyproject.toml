@@ -1,23 +1,27 @@
 [build-system]
-requires = ["setuptools>=42", "wheel"]
+requires = ["setuptools>=77.0.3"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "odesolver"
+name = "odesolver_jelicpat"
 version = "0.0.1"
-description = "A simple Python project for solving and eventually plotting numerically attained solutions for ODEs"
+description = "A simple Python project for solving and eventually plotting numerically obtained solutions for ODEs"
 authors = [
 	{name = "Patrik Jelic", email="patrik.jelic@uni-a.de"}
 ]
 license = "MIT"
 license-files=["LICENSE"]
-
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
 	"numpy>=2.2.5",
 	"matplotlib>=3.10.1",
 ]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
 
 [project.urls]
-"Homepage" = "https://git.rz.uni-augsburg.de/jelicpat/ode_solver"
+Homepage = "https://git.rz.uni-augsburg.de/jelicpat/ode_solver"
+Issues = "https://git.rz.uni-augsburg.de/jelicpat/ode_solver/issues"
