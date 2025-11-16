@@ -11,6 +11,7 @@ class ODESolver:
 
     EULER = "euler"
     AUTO_DIFF = "auto"
+    RUNGE_KUTTA_4 = "rk4"
 
     def solveODE(ode:ODE, method:str, initial_conditions:list, t0:float, t_final:float, h:float) -> np.ndarray:
         """
@@ -33,7 +34,9 @@ class ODESolver:
             case ODESolver.EULER:
                 return Solver.EulerSolver(ode=ode, y0=initial_conditions, t0=t0, t_final=t_final, h=h)
             case ODESolver.AUTO_DIFF:
-                return []
+                return Solver.AutoSolver(ode=ode, y0=initial_conditions, t0=t0, t_final=t_final)
+            case ODESolver.RUNGE_KUTTA_4:
+                return Solver.RungeKutta4Solver(ode=ode, y0=initial_conditions, t0=t0, t_final=t_final, h=h)
             case _:
                 raise Exception(f"Unknown solve method: {method}")
 
