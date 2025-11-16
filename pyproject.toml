@@ -3,7 +3,7 @@ requires = ["setuptools>=77.0.3"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "odesolver_jelicpat"
+name = "odesolver"
 version = "0.0.1"
 description = "A simple Python project for solving and eventually plotting numerically obtained solutions for ODEs"
 authors = [
