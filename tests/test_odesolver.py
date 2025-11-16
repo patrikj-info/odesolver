@@ -1,4 +1,3 @@
-import pytest 
 from odesolver.ode import ODE 
 from odesolver.odesolver import ODESolver
 from odesolver.plotter import Plotter
