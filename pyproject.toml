@@ -21,7 +21,3 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
 ]
-
-[project.urls]
-Homepage = "https://git.rz.uni-augsburg.de/jelicpat/ode_solver"
-Issues = "https://git.rz.uni-augsburg.de/jelicpat/ode_solver/issues"
