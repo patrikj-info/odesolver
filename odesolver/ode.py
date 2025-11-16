@@ -47,9 +47,18 @@ class ODE:
     def get_order(self) -> int:
         return self.order
     
-    def get_funct(self) -> callable:
+    def get_scalar_funct(self) -> callable:
         return self.funct
-    
+
+    def get_vect_funct(self) -> callable:
+        def func(t, x):
+            res = np.empty_like(x)
+            res[:-1] = x[1:]
+            res[-1] = self.funct(t,x)
+            return res
+
+        return func
+
     @staticmethod
     def readHomogenousODE(ode: str) -> "ODE":
         """
@@ -106,6 +115,42 @@ class ODE:
             return func
 
         func =  make_func(coeffs)
+
+        # return the ODE
+        return ODE(order=highest_order, funct=func)               
+
+    @staticmethod
+    def readODE(ode: str, inhom:callable) -> "ODE":
+
+        # get the highest order present in the given ode (i.e. the highest consecutive amount of ')
+        highest_order = max((len(list(group)) for char, group in groupby(ode) if char == "'"), default=0)
+    
+        # get all present orders, including 0
+        all_orders = runs_after_x(ode)
+
+        # prepare array for coefficients
+        coeffs = np.zeros(shape=(highest_order + 1, 1))
+
+        # only get coefficients
+        s = ode.replace("+", "").replace(" ", "").replace("'", "").split("x")
+
+        # iterate through all orders:
+        # 1. is the order present in all_orders? -> get its non-zero coefficient
+        # 2. is the order not present in all_orders? -> set its coeffient to zero 
+        for i in range(highest_order + 1):
+            if i not in all_orders:
+                coeffs[i] = 0.0
+            else:
+                index = np.where(np.array(all_orders) == i)[0][0]
+                coeffs[i] = float(s[index])
+
+        # create the respective function for Eulers Method
+        def make_func(coeffs):
+            def func(t, x):
+                return inhom(t,x)/coeffs[-1] - sum(c * xi for c, xi in zip(coeffs[0:-1], x))/coeffs[-1]
+            return func
+
+        func = make_func(coeffs)
 
         # return the ODE
         return ODE(order=highest_order, funct=func)               
