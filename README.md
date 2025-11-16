@@ -5,7 +5,7 @@ A simple tool to solve ODEs numerically and plot the solution.
 
 ## Features 
     - Solve ODEs with the Euler method 
-    - Solve ODEs with automatic differentiation
+    - Solve ODEs with the RK4 method
 
 ## Installation
 
