@@ -64,7 +64,7 @@ class Plotter():
             line = anim_ax.plot(plot_x, plot_y)[0]
             
             # # axis settings
-            # anim_ax.set(xlim=[np.nanmin(x)*1.5, np.nanmax(x)*1.5], ylim=[np.nanmin(y)*1.5, np.nanmax(y)*1.5])
+            anim_ax.set(xlim=[np.nanmin(x)*1.5, np.nanmax(x)*1.5], ylim=[np.nanmin(y)*1.5, np.nanmax(y)*1.5])
             
             # function for updating plot
             def update(frame):
