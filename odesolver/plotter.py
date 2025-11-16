@@ -7,12 +7,12 @@ class Plotter():
         Class for plotting the numerically attained solutions of ODEs.    
     """
 
-    GIF_FORMAT = "GIF"
-    HTML_FORMAT = "HTML"
-    PNG_FORMAT = "PNG"
+    GIF_FORMAT = "gif"
+    HTML_FORMAT = "html"
+    PNG_FORMAT = "png"
 
 
-    def plot(data:np.ndarray, animated:bool, phase_space:bool = False, save:bool = False, filename:str = None, fileformat:str = None, xlabel:str = "", ylabel:str = "", title:str = "", fps:int = 60):
+    def plot(data:np.ndarray, animated:bool, phase_space:bool = False, save:bool = False, filename:str = None, fileformat:str = "", xlabel:str = "", ylabel:str = "", title:str = "", fps:int = 60):
         """
             Function for plotting the obtained numeric solution of an ODE.
 
