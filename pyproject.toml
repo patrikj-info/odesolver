@@ -9,9 +9,11 @@ description = "A simple Python project for solving and eventually plotting numer
 authors = [
 	{name = "Patrik Jelic", email="patrik.jelic@uni-a.de"}
 ]
-license = {text = "MIT"}
+license = "MIT"
+license-files=["LICENSE"]
+
 readme = "README.md"
-requires-python = ">=3.6"
+requires-python = ">=3.9"
 dependencies = [
 	"numpy>=2.2.5",
 	"matplotlib>=3.10.1",
