@@ -56,7 +56,6 @@ class ODE:
             res[:-1] = x[1:]
             res[-1] = self.funct(t,x)
             return res
-
         return func
 
     @staticmethod
