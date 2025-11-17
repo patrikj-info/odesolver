@@ -24,7 +24,7 @@ class ODE:
         Basic class for handling ODEs.
     """
 
-    def __init__(self, order:int, funct:callable):
+    def __init__(self, order:int, funct:callable, dimension:int = 1):
         """
             Initialize the ODE.
 
@@ -32,12 +32,13 @@ class ODE:
             ---------------
                 order : int
                 funct : callable
+                dimension : dimension
         """
 
         self.order = order 
         self.funct = funct 
+        self.dimension = dimension
 
-    
     def __repr__(self):
         return "ODE()"
     
@@ -57,6 +58,9 @@ class ODE:
             res[-1] = self.funct(t,x)
             return res
         return func
+
+    def get_dimension(self) -> int:
+        return self.dimension
 
     @staticmethod
     def readHomogenousODE(ode: str) -> "ODE":
