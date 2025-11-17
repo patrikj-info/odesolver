@@ -1,5 +1,5 @@
 import numpy as np
-from .ode import ODE
+from ode import ODE
 
 class Solver:
     """
@@ -7,7 +7,7 @@ class Solver:
     """
 
     RK4_CONSTANTS = [1/6, 1/3, 1/3, 1/6]
-    
+
     def EulerSolver(ode:ODE, y0:np.ndarray, t0:float, t_final:float, h:float) -> np.ndarray:
         """
             This solves the given ODE numerically using Euler's method.
@@ -30,26 +30,31 @@ class Solver:
                 np.ndarray
                     Numeric solution.
         """
-        
         # Get number of required steps
         steps = int((t_final - t0) / h)
 
         # Get ODE properties
         ode_order = ode.get_order()
         ode_funct = ode.get_scalar_funct()
+        ode_dim = ode.get_dimension()
 
         # Initialize storage for results
-        results = np.empty((ode_order + 1, steps + 1))
+        results = np.empty((ode_order + 1, steps + 1, ode_dim))
 
         # Initial conditions
         y = y0.copy()
         t_i = t0
 
         # Temporary storage
+        y = np.array(y)
+        y = y.reshape((2,ode_dim))
+
         temp_y = np.empty_like(y)
 
+
+        tx = np.zeros(shape=(1, ode_dim), dtype=float) + t0
         # Add initial conditions
-        results[0,0] = t0 
+        results[0,0] = tx 
         results[1:,0] = y
 
         # Euler Method
