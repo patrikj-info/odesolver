@@ -14,7 +14,7 @@ You can install the package via **PyPI** or from **source**.
 ### Install from PyPI
 
 ```bash
-    pip install odesolver
+    pip install jp-odesolver
 ```
 
 ### Install from Source (GitHub)
