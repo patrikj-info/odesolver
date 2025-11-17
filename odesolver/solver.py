@@ -37,7 +37,7 @@ class Solver:
         ode_order = ode.get_order()
         ode_funct = ode.get_scalar_funct()
         ode_dim = ode.get_dimension()
-
+        
         # Initialize storage for results
         results = np.empty((ode_order + 1, steps + 1, ode_dim))
 
@@ -46,16 +46,15 @@ class Solver:
         t_i = t0
 
         # Temporary storage
-        y = np.array(y)
+        y = np.array(y, dtype=float)
         y = y.reshape((2,ode_dim))
 
-        temp_y = np.empty_like(y)
-
-
+        temp_y = np.zeros_like(y)
         tx = np.zeros(shape=(1, ode_dim), dtype=float) + t0
+
         # Add initial conditions
-        results[0,0] = tx 
-        results[1:,0] = y
+        results[0,0] = tx
+        results[1:,0]= y
 
         # Euler Method
         for i in range(steps):
@@ -63,11 +62,15 @@ class Solver:
             t_old = t_i
             t_i += h
 
+            temp_y[:] = 0
+
             # update
             for n in range(ode_order - 1):
                 temp_y[n] = y[n] + h * y[n + 1]
 
-            temp_y[-1] = y[-1] + h * ode_funct(t_old, y)
+            f_val = ode_funct(t_old, y)
+
+            temp_y[-1] = y[-1] + h * f_val
 
             y = temp_y.copy()
 
@@ -150,3 +153,35 @@ class Solver:
 
     def AutoSolver(ode:ODE, y0:np.ndarray, t0:float, t_final:float) -> np.ndarray:
         return np.zeros(shape=(1,1))
+
+    def unpackData(data:np.ndarray, axis:tuple[int] = (0, 1, 2)) -> tuple[np.ndarray]:        
+        """
+            Unpack the data received from the numerically solvers.
+
+            Parameters
+            -------------------
+                data : np.ndarray
+                    The raw data.
+                axis : tuple
+                    The axes, which are to be used for unpacking. For example, time is indexed with 0, while the variable is 1 and its first derivative 2 etc.
+
+            Returns
+            -------------------
+                tuple[np.ndarray]
+                    The unpacked data.
+        """
+
+        if len(axis) == 0:
+            raise Exception("No axis given!")
+
+        return_tuple = []
+
+        for i in range(len(axis)):
+            if i == 0:
+                t = np.unique(data[0])
+                return_tuple.append(t)
+            else:
+                index = axis[i]
+                return_tuple.append(data[i].T)
+
+        return tuple(return_tuple)
