@@ -13,10 +13,10 @@ sol = ODESolver.solveODE(ode=ode, method="euler", initial_conditions=[1.0, 0.0],
 t, x = unpackData(sol, (0,1))
 
 # plot solution
-ODESolver.plot(t,x, filename="harm_oscillator_euler.png", fileformat="png")
+Plotter.plot(t,x, filename="harm_oscillator_euler.png", fileformat="png")
 
 # find solution using Runge-Kutta 4
 sol = ODESolver.solveODE(ode=ode, method="rk4", initial_conditions=[1.0, 0.0], t0=0, t_final=10, h=0.01)
 
 # plot solution
-ODESolver.plot(t,x, filename="harm_oscillator_rk4.png", fileformat="png")
+Plotter.plot(t,x, filename="harm_oscillator_rk4.png", fileformat="png")
