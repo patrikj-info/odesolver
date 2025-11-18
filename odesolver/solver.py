@@ -155,34 +155,34 @@ class Solver:
     def AutoSolver(ode:ODE, y0:np.ndarray, t0:float, t_final:float) -> np.ndarray:
         return np.zeros(shape=(1,1))
 
-    def unpackData(data:np.ndarray, axis:tuple[int] = (0, 1, 2)) -> tuple[np.ndarray]:        
-        """
-            Unpack the data received from the numerically solvers.
+def unpackData(data:np.ndarray, axis:tuple[int] = (0, 1, 2)) -> tuple[np.ndarray]:        
+    """
+        Unpack the data received from the numerically solvers.
 
-            Parameters
-            -------------------
-                data : np.ndarray
-                    The raw data.
-                axis : tuple
-                    The axes, which are to be used for unpacking. For example, time is indexed with 0, while the variable is 1 and its first derivative 2 etc.
+        Parameters
+        -------------------
+            data : np.ndarray
+                The raw data.
+            axis : tuple
+                The axes, which are to be used for unpacking. For example, time is indexed with 0, while the variable is 1 and its first derivative 2 etc.
 
-            Returns
-            -------------------
-                tuple[np.ndarray]
-                    The unpacked data.
-        """
+        Returns
+        -------------------
+            tuple[np.ndarray]
+                The unpacked data.
+    """
 
-        if len(axis) == 0:
-            raise Exception("No axis given!")
+    if len(axis) == 0:
+        raise Exception("No axis given!")
 
-        return_tuple = []
+    return_tuple = []
 
-        for i in range(len(axis)):
-            if i == 0:
-                t = np.unique(data[0])
-                return_tuple.append(t)
-            else:
-                index = axis[i]
-                return_tuple.append(data[index])
+    for i in range(len(axis)):
+        if i == 0:
+            t = np.unique(data[0])
+            return_tuple.append(t)
+        else:
+            index = axis[i]
+            return_tuple.append(data[index])
 
-        return tuple(return_tuple)
+    return tuple(return_tuple)
