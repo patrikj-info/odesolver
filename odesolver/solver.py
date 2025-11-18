@@ -119,13 +119,15 @@ class Solver:
         # Initial conditions
         y = y0.copy()
         t_i = t0
+        y = np.array(y, dtype=float)
+        if y.shape[1] != ode_dim:
+            raise Exception(f"Dimension of intitial conditions ({y.shape[1]}) does not match dimension of ODE ({ode_dim})!")
+        y = y.reshape((ode_order, ode_dim))
 
         # Add initial conditions
         results[0,0] = t0
         results[1:, 0] = y 
 
-        y = np.array(y, dtype=float)
-        y = y.reshape((ode_order, ode_dim))
 
         # RK4 Method
         for i in range(steps):
@@ -133,8 +135,6 @@ class Solver:
             t_older = t_i
             t_i += h
             # update
-            # for n in range(ode_order):
-            #     temp_y[n] = y[n]
 
             k_1 = ode_funct(t_older, y)
             k_2 = ode_funct(t_older + h/2, y + h/2*k_1)
