@@ -47,7 +47,7 @@ class Solver:
 
         # Temporary storage
         y = np.array(y, dtype=float)
-        y = y.reshape((2,ode_dim))
+        y = y.reshape((ode_order, ode_dim))
 
         temp_y = np.zeros_like(y)
         tx = np.zeros(shape=(1, ode_dim), dtype=float) + t0
@@ -111,9 +111,10 @@ class Solver:
         # Get ODE properties
         ode_order = ode.get_order()
         ode_funct = ode.get_vect_funct()
+        ode_dim = ode.get_dimension()
 
         # Initialize storage for results
-        results = np.empty((ode_order + 1, steps + 1))
+        results = np.empty((ode_order + 1, steps + 1, ode_dim))
 
         # Initial conditions
         y = y0.copy()
@@ -123,7 +124,8 @@ class Solver:
         results[0,0] = t0
         results[1:, 0] = y 
 
-        y = np.array(y)
+        y = np.array(y, dtype=float)
+        y = y.reshape((ode_order, ode_dim))
 
         # RK4 Method
         for i in range(steps):
@@ -139,13 +141,10 @@ class Solver:
             k_3 = ode_funct(t_older + h/2, y + h/2*k_2)
             k_4 = ode_funct(t_older + h, y + h*k_3)
             k = [k_1, k_2, k_3, k_4]
-                # print(f"{k=}")
 
             for j in range(4):
                 k_n = Solver.RK4_CONSTANTS[j]*k[j]                     
                 y += h * k_n
-
-            # y = temp_y.copy()
 
             # save time and solution
             results[0, i+1] = t_i
