@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.animation import FuncAnimation
+from matplotlib.animation import FuncAnimation, ArtistAnimation
+from matplotlib.artist import Artist
 
 class Plotter():
     """
@@ -11,119 +12,133 @@ class Plotter():
     HTML_FORMAT = "html"
     PNG_FORMAT = "png"
 
-
-    def plot(data:np.ndarray, animated:bool, phase_space:bool = False, save:bool = False, filename:str = None, fileformat:str = "", xlabel:str = "", ylabel:str = "", title:str = "", fps:int = 60):
+    def plot(xdata:np.ndarray, ydata:np.ndarray, filename:str = None, fileformat:str = None, animation:bool = False, save_fps:int = 120, animation_tail:bool = False, tail_length:int = 200, center:tuple[float, float] = (None, None), **kwargs) -> None:
         """
             Function for plotting the obtained numeric solution of an ODE.
+            Keyword arguments (kwargs) are for additional plot settings, such as labels, figsize, dpi, pointsize etc.
 
             Parameters
             ------------------
-                data : np.ndarray
-                    The numeric solution of an ODE.
-                animated : bool
-                    Animate the solution?
-                phase_space : bool
-                    Create phase space diagram from the obtained solution? (i.e. x' vs x instead of t vs x)
-                save : bool
-                    Save the created graph?
-                filename : str
+                xdata : np.ndarray
+                    The plotted x-data.
+                ydata : np.ndarray
+                    The plotted y-data.
+                filename : str = None
                     The filename of the saved graph.
-                fileformat : str
+                fileformat : str = None
                     The format of the saved graph, e.g. png or gif.
-                xlabel : str
-                    The x-label of the created graph.
-                ylabel : str
-                    The y-label of the created graph.
-                title : str
-                    The title of the created graph.
-                fps : int
+                animation : bool = False
+                    Animate the solution?
+                save_fps : int = 120
                     The FPS of the saved animation.
+                animation_tail : bool = False
+                    Show a tail within the animation.
+                tail_length : int = 200
+                    The length of the tail.
+                center : tuple = (None, None)
+                    The coordinates of the center point.    
+        
         """
 
-        # should the plot be animated?
-        if animated:
+        if len(xdata.shape) > 1:
+            if xdata.shape[1] != 1:
+                raise Exception("Given x-data is not one-dimensionsal!")        
+        elif len(ydata.shape) > 1:
+            if ydata.shape[1] != 1:
+                raise Exception("Given y-data is not one-dimensionsal!") 
 
-            # init the figure and axis
-            anim_fig, anim_ax = plt.subplots()
+        # plot settings
+        fig = plt.figure(figsize=kwargs.get("figsize", (6,6)))
 
-            # get number of points -> is number of frames
-            frames = data.shape[1]
+        xlabel = kwargs.get("xlabel", "")
+        ylabel = kwargs.get("ylabel", "")
+        title = kwargs.get("title", "")
+        grid = kwargs.get("grid", False)
 
-            # load the data -> phase space diagram or normal solution plot?
-            x = data[0]
-            if phase_space:
-                # get velocity (i.e. first derivative)
-                x = data[2]
-            y = data[1]
+        plt.xlabel(xlabel)
+        plt.ylabel(ylabel)
+        plt.title(title)
+        plt.grid(visible=grid)
 
-            # plotted data -> required for animation
-            plot_x = x[0]
-            plot_y = y[0]
+        # axes settings
+        axes = plt.gca()
 
-            # plot line
-            line = anim_ax.plot(plot_x, plot_y)[0]
+        std_min_xlim = np.nanmin(xdata[xdata != -np.inf])*2 
+        std_max_xlim = np.nanmax(xdata[xdata != -np.inf])*2
+        axes.set_xlim(kwargs.get("xlim_left", std_min_xlim), kwargs.get("xlim_right", std_max_xlim))
+
+
+        std_min_ylim = np.nanmin(ydata[ydata != -np.inf])*2 
+        std_max_ylim = np.nanmax(ydata[ydata != -np.inf])*2
+        axes.set_ylim(kwargs.get("ylim_left", std_min_ylim), kwargs.get("ylim_right", std_max_ylim))
+
+        axes.set_axisbelow(True)
+
+        if animation:
+            color = kwargs.get("color", "blue")
+            radius = kwargs.get("radius", 0.1)
+            lw = kwargs.get("linewidth", 1)
             
-            # # axis settings
-            anim_ax.set(xlim=[np.nanmin(x)*1.5, np.nanmax(x)*1.5], ylim=[np.nanmin(y)*1.5, np.nanmax(y)*1.5])
+            current_point = plt.Circle((xdata[0], ydata[0]), radius=radius, color=color)
+            axes.add_artist(current_point)
+
+            tail_line = axes.plot([], [], color=color, lw=lw)[0]
+            x_tail, y_tail = list(), list()
+
+            steps = len(xdata)
+
+            def step():
+                current = 0
+                while True:
+                    current = (current + 1) % steps
+                    if animation_tail:
+                        x_tail.append(xdata[current])               # update tail x-data
+                        y_tail.append(ydata[current])               # update tail y-data
+                        if len(x_tail) > tail_length:               # clip tail
+                            x_tail.pop(0)
+                            y_tail.pop(0)                
+                    yield (xdata[current], ydata[current])
+
+            def animate(r):
+                current_point.center = r
+                tail_line.set_data(x_tail, y_tail)
+                return current_point,tail_line
             
-            # function for updating plot
-            def update(frame):
-                # append more data
-                plot_x = x[:frame]
-                plot_y = y[:frame]
-                
-                # set new data
-                line.set_xdata(plot_x)
-                line.set_ydata(plot_y)
-                
-                # return new line
-                return line
+            interval = kwargs.get("anim_interval", 20)
 
-            # create animation
-            anim = FuncAnimation(fig=anim_fig, func=update, frames=frames, interval=1e-15)
+            anim = FuncAnimation(fig, animate, step, interval=interval, blit=True, cache_frame_data=False)
 
-            # plot settings
-            plt.title(label=title)
-            plt.xlabel(xlabel=xlabel)
-            plt.ylabel(ylabel=ylabel)
-
-            # show plot
             plt.show()
 
-            # save plot?
-            if save:
+            if filename != None:
+                dpi = kwargs.get("dpi", 200)
                 if fileformat == Plotter.GIF_FORMAT:
-                    anim.save(filename, "pillow", fps=fps, dpi=400)
+                    anim.save(filename, "pillow", fps=save_fps, dpi=dpi)
                 elif fileformat == Plotter.HTML_FORMAT:
-                    anim.save(filename, "html", fps=fps, dpi=400)
+                    anim.save(filename, "html", fps=save_fps, dpi=dpi)
                 elif fileformat == Plotter.PNG_FORMAT:
-                    plt.plot(x, y)
+                    label = kwargs.get("label", "")
+                    color = kwargs.get("color", "blue")
+                    plt.plot(xdata, ydata, label=label, color=color)
                     plt.title(label=title)
                     plt.xlabel(xlabel=xlabel)
                     plt.ylabel(ylabel=ylabel)
-                    plt.savefig(filename, dpi=400)
+                    plt.grid(visible=grid)
+                    plt.savefig(filename, dpi=dpi)
                 else:
                     raise Exception(f"Given file format not recognized: {fileformat}")
 
-
         else:
-            try:
-                # load data
-                x = data[0]
-                y = data[1] 
-                if phase_space:
-                    # phase space diagram?
-                    x = data[2] # get first derivative (i.e. velocity)
+            label = kwargs.get("label", "")
+            color = kwargs.get("color", "blue")
+            plt.plot(xdata, ydata, label=label, color=color)
 
-                plt.plot(x,y)
-                plt.title(label=title)
-                plt.xlabel(xlabel)
-                plt.xlabel(ylabel)
+            plt.show()
 
-                if save:
-                    plt.savefig(filename, dpi=400)
-
-                plt.show()           
-
-            except Exception as e:
-                print(f"Error when saving the graph: {e=}")
+            if filename != None:
+                dpi = kwargs.get("dpi", 200)
+                match fileformat:
+                    case Plotter.PNG_FORMAT:
+                        plt.savefig(filename, dpi=dpi)
+                    case _:
+                        raise Exception(f"Unknown fileformat: {fileformat}")
