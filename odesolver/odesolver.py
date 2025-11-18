@@ -1,6 +1,6 @@
-from .ode import ODE 
-from .plotter import Plotter 
-from .solver import Solver 
+from ode import ODE 
+from plotter import Plotter 
+from solver import Solver
 
 import numpy as np
 
@@ -42,15 +42,3 @@ class ODESolver:
                 return Solver.RungeKutta4Solver(ode=ode, y0=initial_conditions, t0=t0, t_final=t_final, h=h)
             case _:
                 raise Exception(f"Unknown solve method: {method}")
-
-    def plotSolution(data:np.ndarray, **kwargs) -> None:
-        """
-            Plot the obtained ODE solution.
-
-            Parameters
-            ---------------
-                data : np.ndarray
-
-        """
-        Plotter.plot(data=data, animated=kwargs.get("animated", False), phase_space=kwargs.get("phase_space", False), save=kwargs.get("save", False), filename=kwargs.get("filename", ""), xlabel=kwargs.get("xlabel", ""), ylabel=kwargs.get("ylabel", ""), title=kwargs.get("title", ""), fps=kwargs.get("fps", 400), fileformat=kwargs.get("fileformat", ""))
-        
