@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "jp_odesolver"
-version = "0.0.3"
+version = "0.0.4"
 description = "A simple Python project for solving and eventually plotting numerically obtained solutions for ODEs"
 authors = [
 	{name = "Patrik Jelic", email="patrik.jelic@uni-a.de"}
