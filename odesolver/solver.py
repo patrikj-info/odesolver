@@ -1,5 +1,5 @@
 import numpy as np
-from ode import ODE
+from .ode import ODE
 
 class Solver:
     """
@@ -120,8 +120,14 @@ class Solver:
         y = y0.copy()
         t_i = t0
         y = np.array(y, dtype=float)
-        if y.shape[1] != ode_dim:
-            raise Exception(f"Dimension of intitial conditions ({y.shape[1]}) does not match dimension of ODE ({ode_dim})!")
+        
+        if len(y.shape) > 1:
+            if y.shape[1] != ode_dim:
+                raise Exception(f"Dimension of intitial conditions ({y.shape[1]}) does not match dimension of ODE ({ode_dim})!")
+        else:
+            if len(y.shape) != ode_dim:
+                raise Exception(f"Dimension of intitial conditions ({len(y.shape)}) does not match dimension of ODE ({ode_dim})!")
+
         y = y.reshape((ode_order, ode_dim))
 
         # Add initial conditions

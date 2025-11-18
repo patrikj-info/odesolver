@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.animation import FuncAnimation, ArtistAnimation
-from matplotlib.artist import Artist
+from matplotlib.animation import FuncAnimation
 
 class Plotter():
     """
@@ -133,8 +132,6 @@ class Plotter():
             color = kwargs.get("color", "blue")
             plt.plot(xdata, ydata, label=label, color=color)
 
-            plt.show()
-
             if filename != None:
                 dpi = kwargs.get("dpi", 200)
                 match fileformat:
@@ -142,3 +139,5 @@ class Plotter():
                         plt.savefig(filename, dpi=dpi)
                     case _:
                         raise Exception(f"Unknown fileformat: {fileformat}")
+                    
+            plt.show()

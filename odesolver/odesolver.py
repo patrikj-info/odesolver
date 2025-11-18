@@ -1,6 +1,5 @@
-from ode import ODE 
-from plotter import Plotter 
-from solver import Solver
+from .ode import ODE 
+from .solver import Solver
 
 import numpy as np
 
