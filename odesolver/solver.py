@@ -10,7 +10,7 @@ class Solver:
 
     def EulerSolver(ode:ODE, y0:np.ndarray, t0:float, t_final:float, h:float) -> np.ndarray:
         """
-            This solves the given ODE numerically using Euler's method.
+            This solves the given n-dimensional ODE numerically using Euler's method.
 
             Parameters
             ----------------
@@ -62,6 +62,7 @@ class Solver:
             t_old = t_i
             t_i += h
 
+            # reset temp values
             temp_y[:] = 0
 
             # update
@@ -72,6 +73,7 @@ class Solver:
 
             temp_y[-1] = y[-1] + h * f_val
 
+            # copy values
             y = temp_y.copy()
 
             # save time and solution
@@ -182,6 +184,6 @@ class Solver:
                 return_tuple.append(t)
             else:
                 index = axis[i]
-                return_tuple.append(data[i].T)
+                return_tuple.append(data[index])
 
         return tuple(return_tuple)
